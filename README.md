@@ -65,5 +65,4 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 # appetiser-app-challenge
-# appetiser-app-coding-challenge
-# appetiser-app-challenge
+Please rename env-sample.txt to .env

@@ -144,6 +144,12 @@
                     if (result.data.success) {
                         this.$noty.success("Event successfully saved")
                         this.getEvents()
+                    } else {
+                        if (result.data.message) {
+                            this.$noty.error(result.data.message)
+                        } else {
+                            this.$noty.error("Error occurred.")
+                        }
                     }
                     this.calendarLoading = false
                 }).catch(err => {

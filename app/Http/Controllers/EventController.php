@@ -65,10 +65,10 @@ class EventController extends Controller
                         $model->date = $monday;
                         $model->save();
                     }
+                } else {
+                    return response()->json(['success' => false, 'message' => 'No Monday between date range selected.']);
                 }
-            }
-
-            if (isset($postData['formData']['tue']) && $postData['formData']['tue']) {
+            } else if (isset($postData['formData']['tue']) && $postData['formData']['tue']) {
                 $startDate = Carbon::parse($fromDate)->modify('this tuesday');
                 $endDate = Carbon::parse($toDate);
         
@@ -83,10 +83,10 @@ class EventController extends Controller
                         $model->date = $tuesday;
                         $model->save();
                     }
+                } else {
+                    return response()->json(['success' => false, 'message' => 'No Tuesday between date range selected.']);
                 }
-            }
-
-            if (isset($postData['formData']['wed']) && $postData['formData']['wed']) {
+            } else if (isset($postData['formData']['wed']) && $postData['formData']['wed']) {
                 $startDate = Carbon::parse($fromDate)->modify('this wednesday');
                 $endDate = Carbon::parse($toDate);
         
@@ -101,10 +101,10 @@ class EventController extends Controller
                         $model->date = $wednesday;
                         $model->save();
                     }
+                } else {
+                    return response()->json(['success' => false, 'message' => 'No Wednesday between date range selected.']);
                 }
-            }
-
-            if (isset($postData['formData']['thu']) && $postData['formData']['thu']) {
+            } else if (isset($postData['formData']['thu']) && $postData['formData']['thu']) {
                 $startDate = Carbon::parse($fromDate)->modify('this thursday');
                 $endDate = Carbon::parse($toDate);
         
@@ -119,10 +119,10 @@ class EventController extends Controller
                         $model->date = $thursday;
                         $model->save();
                     }
+                } else {
+                    return response()->json(['success' => false, 'message' => 'No Thursday between date range selected.']);
                 }
-            }
-
-            if (isset($postData['formData']['fri']) && $postData['formData']['fri']) {
+            } else if (isset($postData['formData']['fri']) && $postData['formData']['fri']) {
                 $startDate = Carbon::parse($fromDate)->modify('this friday');
                 $endDate = Carbon::parse($toDate);
         
@@ -137,10 +137,10 @@ class EventController extends Controller
                         $model->date = $friday;
                         $model->save();
                     }
+                } else {
+                    return response()->json(['success' => false, 'message' => 'No Friday between date range selected.']);
                 }
-            }
-
-            if (isset($postData['formData']['sat']) && $postData['formData']['sat']) {
+            } else if (isset($postData['formData']['sat']) && $postData['formData']['sat']) {
                 $startDate = Carbon::parse($fromDate)->modify('this saturday');
                 $endDate = Carbon::parse($toDate);
         
@@ -155,10 +155,10 @@ class EventController extends Controller
                         $model->date = $saturday;
                         $model->save();
                     }
+                } else {
+                    return response()->json(['success' => false, 'message' => 'No Saturday between date range selected.']);
                 }
-            }
-
-            if (isset($postData['formData']['sun']) && $postData['formData']['sun']) {
+            } else if (isset($postData['formData']['sun']) && $postData['formData']['sun']) {
                 $startDate = Carbon::parse($fromDate)->modify('this sunday');
                 $endDate = Carbon::parse($toDate);
         
@@ -173,13 +173,35 @@ class EventController extends Controller
                         $model->date = $sunday;
                         $model->save();
                     }
+                } else {
+                    return response()->json(['success' => false, 'message' => 'No Sunday between date range selected.']);
+                }
+            } else {
+                $days = [];
+
+                $startDate = Carbon::parse($fromDate);
+                $endDate = Carbon::parse($toDate);
+        
+                for ($date = $startDate; $date->lte($endDate); $date->addDay()) {
+                    $days[] = $date->format('Y-m-d');
+                }
+
+                if (count($days) > 0) {
+                    foreach ($days as $day) {
+                        $model = new Event;
+                        $model->title = $title;
+                        $model->date = $day;
+                        $model->save();
+                    }
+                } else {
+                    return response()->json(['success' => false, 'message' => 'No date between date range selected.']);
                 }
             }
 
             return response()->json(['success' => true]);
         }
 
-        return response()->json(['success' => false]);
+        return response()->json(['success' => false, 'message' => 'Error occurred.']);
     }
 
     /**
